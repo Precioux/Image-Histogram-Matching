@@ -1,43 +1,85 @@
+# Samin Mahdipour - 9839039
+#Final Project - part 2
 import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image
 from numpy import asarray
 
+
 # load the image
-address = input("Enter image name ( with file type) :")
-image = Image.open(address)
+addressReference = "Reference.jpg"
+addressSource = "Source.jpg"
+
+Reference = Image.open(addressReference)
+Source = Image.open(addressSource)
 # convert image to numpy array
-data = asarray(image)
+reference = asarray(Reference)
+source = asarray(Source)
 
-sz = data.size
-wd = image.width
-ht = image.height
-r = np.array([data[0][0][0]])
-g = np.array([data[0][0][1]])
-b = np.array([data[0][0][2]])
-k = 0
+sizeReference = reference.size
+widthReference = Reference.width
+heightRefrence = Reference.height
 
-for i in range(1, ht):
-    for j in range(1, wd):
-        r = np.append(r, data[i][j][0])
-        g = np.append(g, data[i][j][1])
-        b = np.append(b, data[i][j][2])
-        k = k + 1
+sizeSource = source.size
+widthSource = Source.width
+heightSource = Source.height
 
-plt.figure(figsize=(15, 15))
-color = np.arange(0, k + 1)
-fig, ax = plt.subplots(3, 1)
-ax[0].plot(color, r, color="red")
-ax[0].set_title("Red color distribution")
-ax[0].set_xlabel("Pixel")
-ax[0].set_ylabel("color")
-ax[1].plot(color, g, color="green")
-ax[1].set_title("Green color distribution")
-ax[1].set_xlabel("Pixel")
-ax[1].set_ylabel("color")
-ax[2].plot(color, b, color="blue")
-ax[2].set_title("Blue color distribution")
-ax[2].set_xlabel("Pixel")
-ax[2].set_ylabel("color")
-fig.tight_layout()
+def dfB(img, deb=""):
+    values = np.zeros((256))
+    for i in range(img.shape[0]):
+        for j in range(img.shape[1]):
+            values[round(img[i][j][2])] += 1
+
+    return values
+
+
+def dfG(img, deb=""):
+    values = np.zeros((256))
+    for i in range(img.shape[0]):
+        for j in range(img.shape[1]):
+            values[round(img[i][j][1])] += 1
+
+    return values
+
+
+def dfR(img, deb=""):
+    values = np.zeros((256))
+    for i in range(img.shape[0]):
+        for j in range(img.shape[1]):
+            values[round(img[i][j][0])] += 1
+
+    return values
+
+plt.figure(0)
+plt.title('Reference image')
+plt.imshow(Reference)
+
+plt.figure(1)
+plt.title('Histogram of Red in Reference image')
+plt.plot(dfR(reference),color="red")
+
+plt.figure(2)
+plt.title('Histogram of Green in Reference image')
+plt.plot(dfG(reference),color="green")
+
+plt.figure(3)
+plt.title('Histogram of Blue in Reference image')
+plt.plot(dfB(reference),color="blue")
+
+plt.figure(4)
+plt.title('Source image')
+plt.imshow(Source)
+
+plt.figure(5)
+plt.title('Histogram of Red in Source image')
+plt.plot(dfR(source),color="red")
+
+plt.figure(6)
+plt.title('Histogram of Green in Source image')
+plt.plot(dfG(source),color="green")
+
+plt.figure(7)
+plt.title('Histogram of Blue in Source image')
+plt.plot(dfB(source),color="blue")
+
 plt.show()
